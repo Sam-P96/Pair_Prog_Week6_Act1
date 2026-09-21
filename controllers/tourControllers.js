@@ -1,6 +1,7 @@
 const Tour = require("../models/tourModel");
 const mongoose = require("mongoose");
 
+
 // GET /tours
 const getAllTours = async (req, res) => {
   const user_id = req.user._id;
