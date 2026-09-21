@@ -7,6 +7,10 @@ const {
   updateTour,
   deleteTour,
 } = require("../controllers/tourControllers");
+const requireAuth = require("../middleware/requireAuth");
+
+// Apply the requireAuth middleware to all routes in this router
+router.use(requireAuth);
 
 
 router.get("/", getAllTours);
