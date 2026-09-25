@@ -1,6 +1,6 @@
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
-const validator = require('validator');
+const validator = require("validator");
 
 // Generate JWT
 const generateToken = (_id) => {
@@ -39,8 +39,8 @@ const signupUser = async (req, res) => {
   }
 
   if (!validator.isStrongPassword(password)) {
-  return res.status(400).json({ error: "Password is too weak" });
-}
+    return res.status(400).json({ error: "Password is too weak" });
+  }
 
   try {
     const user = await User.signup(
@@ -56,7 +56,18 @@ const signupUser = async (req, res) => {
     // create a token
     const token = generateToken(user._id);
 
-    res.status(201).json({ email, token });
+    res.status(201).json({
+      user: {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        phone_number: user.phone_number,
+        gender: user.gender,
+        date_of_birth: user.date_of_birth,
+        membership_status: user.membership_status,
+      },
+      token,
+    });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }

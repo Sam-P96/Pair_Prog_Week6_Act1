@@ -1,7 +1,6 @@
 const Tour = require("../models/tourModel");
 const mongoose = require("mongoose");
 
-
 // GET /tours
 const getAllTours = async (req, res) => {
   const user_id = req.user._id;
@@ -36,7 +35,7 @@ const getTourById = async (req, res) => {
     return res.status(400).json({ message: "Invalid tour ID" });
   }
   try {
-    const tour = await Tour.findById(tourId, { user_id });
+    const tour = await Tour.findOne({ _id: tourId, user_id });
     if (tour) {
       res.status(200).json(tour);
     } else {
@@ -56,10 +55,12 @@ const updateTour = async (req, res) => {
     return res.status(400).json({ message: "Invalid tour ID" });
   }
 
+  const { name, info, image, price } = req.body;
+
   try {
     const updatedTour = await Tour.findOneAndUpdate(
       { _id: tourId, user_id: user_id },
-      { ...req.body },
+      { name, info, image, price },
       { new: true },
     );
     if (updatedTour) {
@@ -82,7 +83,10 @@ const deleteTour = async (req, res) => {
   }
 
   try {
-    const deletedTour = await Tour.findOneAndDelete({ _id: tourId, user_id: user_id });
+    const deletedTour = await Tour.findOneAndDelete({
+      _id: tourId,
+      user_id: user_id,
+    });
     if (deletedTour) {
       res.status(204).send(); // 204 No Content
     } else {

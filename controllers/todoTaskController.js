@@ -61,9 +61,9 @@ const deleteTodoTask = async (req, res) => {
   const { id } = req.params;
   try {
     const user_id = req.user._id;
-    const todoTask = await TodoTask.findByIdAndDelete({
+    const todoTask = await TodoTask.findOneAndDelete({
       _id: id,
-      user_id: user_id,
+      user_id,
     });
     if (!todoTask) {
       return res.status(404).json({ message: "TodoTask not found" });
